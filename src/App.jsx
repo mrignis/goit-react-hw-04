@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -8,6 +8,8 @@ import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+
+import { requestImages } from "./components/api"; // Імпорт функції requestImages з api.js
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -19,25 +21,20 @@ const App = () => {
   const fetchImages = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(
-        `https://api.unsplash.com/search/photos`,
-        {
-          params: {
-            query,
-            page,
-            per_page: 10, // Set the number of images per page
-            client_id: "YOUR_UNSPLASH_ACCESS_KEY", // Replace with your actual access key
-          },
-        }
-      );
-      const newImages = response.data.results;
-      setImages((prevImages) => [...prevImages, ...newImages]);
+      const response = await requestImages(query, page); // Виклик функції requestImages замість axios.get
+      // Перевірка, чи є результати в відповіді від сервера перед тим, як використовувати їх
+      if (response && response.data && response.data.results) {
+        const newImages = response.data.results;
+        setImages((prevImages) => [...prevImages, ...newImages]);
+      } else {
+        // Якщо результати відсутні, вивести повідомлення про помилку
+        throw new Error("No results found in the response.");
+      }
     } catch (error) {
       console.error("Error fetching images:", error);
       toast.error("Error fetching images");
     } finally {
       setIsLoading(false);
-      <Toaster position="top-center" reverseOrder={false} />;
     }
   };
 

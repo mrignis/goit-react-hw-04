@@ -1,22 +1,23 @@
 import axios from "axios";
 
-// Створення інстанції Axios з базовим URL
+const unsplashAccessKey = "8mcRsNbjAwUXJlUgEJzbvpLMrGD8KOZY1sMb-0IBjCk"; // Вставте свій ключ доступу сюди
+
 const instance = axios.create({
-  baseURL: "https://dummyjson.com",
+  baseURL: "https://api.unsplash.com",
+  headers: {
+    Authorization: `Client-ID ${unsplashAccessKey}`,
+  },
 });
 
-// Функція запиту продуктів
-eimport axios from "axios";
-
-// Створення інстанції Axios з базовим URL
-const instance = axios.create({
-  baseURL: "https://dummyjson.com",
-});
-
-// Функція запиту зображень різного роду
-export const requestImages = async () => {
+export const requestImages = async (query, page) => {
   try {
-    const response = await instance.get("/images");
+    const response = await instance.get("/photos", {
+      params: {
+        query,
+        page,
+        per_page: 10,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching images:", error);
@@ -24,13 +25,17 @@ export const requestImages = async () => {
   }
 };
 
-// Функція запиту продуктів за запитом
-export const requestProductsByQuery = async (query = "") => {
+export const requestProductsByQuery = async (query) => {
   try {
-    const response = await instance.get(`/products/search?q=${query}`);
+    const response = await instance.get("/products/search", {
+      params: {
+        query,
+        limit: 20,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error fetching products by query:", error);
+    console.error("Error fetching products:", error);
     throw error;
   }
 };
