@@ -1,0 +1,12 @@
+/* ImageCard.module.css */
+
+.card {
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+}
