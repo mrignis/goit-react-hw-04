@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 
@@ -9,7 +9,10 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 
-import { requestImages } from "./components/api"; // Імпорт функції requestImages з api.js
+const API_URL = "https://api.unsplash.com/search/photos";
+const IMAGES_PER_PAGE = 20;
+
+const API_KEY = "8mcRsNbjAwUXJlUgEJzbvpLMrGD8KOZY1sMb-0IBjCk"; // Ваш ключ API
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -18,40 +21,35 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [modalImage, setModalImage] = useState(null);
 
-  const fetchImages = async () => {
+  const handleSearch = useCallback(async (searchQuery) => {
+    setQuery(searchQuery);
+    setPage(1);
+  }, []);
+
+  const fetchImages = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const response = await requestImages(query, page); // Виклик функції requestImages замість axios.get
-      // Перевірка, чи є результати в відповіді від сервера перед тим, як використовувати їх
-      if (response && response.data && response.data.results) {
-        const newImages = response.data.results;
-        setImages((prevImages) => [...prevImages, ...newImages]);
-      } else {
-        // Якщо результати відсутні, вивести повідомлення про помилку
-        throw new Error("No results found in the response.");
+      if (query) {
+        setIsLoading(true);
+        const { data } = await axios.get(
+          `${API_URL}?query=${query}&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${API_KEY}`
+        );
+        setImages(data.results);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error fetching images:", error);
-      toast.error("Error fetching images");
-    } finally {
       setIsLoading(false);
+      toast.error("Error fetching images. Please try again later.");
     }
-  };
-
-  const handleSearch = (newQuery) => {
-    setQuery(newQuery);
-    setPage(1);
-    setImages([]);
-  };
+  }, [query, page]);
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
-    if (!query) return;
     fetchImages();
-  }, [query, page]);
+  }, [fetchImages]);
 
   const handleImageClick = (image) => {
     setModalImage(image);

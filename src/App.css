@@ -1,42 +1,56 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* styles.css */
+:root{
+  width: 1200px;}
+/* Стилі для пошукової панелі */
+.search-bar {
+  margin-bottom: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Стилі для контейнера зображень */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* Створення сіткового макету */
+  gap: 20px;
+  /* Проміжок між картками зображень */
+  list-style: none;
+  /* Вимкнення маркерів списку */
+  padding: 0;
+  /* Зняття відступів */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Стилі для кожної картки зображення */
+.image-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.card {
-  padding: 2em;
+/* Стилі для зображення */
+.image-card img {
+  width: 100%;
+  /* Зображення розтягується на всю ширину картки */
+  height: auto;
+  /* Збереження пропорцій */
+  display: block;
+  /* Зображення відображається як блок */
 }
 
-.read-the-docs {
-  color: #888;
+/* Стилі для назви користувача */
+.image-card .user-name {
+  position: absolute;
+  /* Розташування абсолютно */
+  bottom: 0;
+  /* Відстань від нижнього краю */
+  left: 0;
+  /* Відстань від лівого краю */
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Прозорий фон */
+  color: #fff;
+  /* Колір тексту */
+  padding: 5px 10px;
+  /* Відступи внутрішні */
+  border-top-right-radius: 8px;
+  /* Закруглення верхнього правого кута */
 }

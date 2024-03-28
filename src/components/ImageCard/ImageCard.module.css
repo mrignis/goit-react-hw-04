@@ -1,12 +1,45 @@
-/* ImageCard.module.css */
-
 .card {
-    border-radius: 5px;
-    overflow: hidden;
-    cursor: pointer;
+    position: relative;
+    list-style: none;
+    margin-bottom: 1rem;
+    width: 200px;
+    /* Розмір картки 200 пікселів */
 }
 
 .image {
     width: 100%;
-    height: auto;
+    /* Зображення займає всю ширину контейнера */
+    height: 200px;
+    /* Встановлюємо висоту картки 200 пікселів */
+    border-radius: 8px;
+    object-fit: cover;
+    /* Зображення буде змаштабоване так, щоб заповнити контейнер, зберігаючи пропорції */
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
+.overlayContent {
+    color: white;
+}
+
+.title {
+    margin-bottom: 0.5rem;
+}
+
+.views {
+    font-size: 0.8rem;
 }
