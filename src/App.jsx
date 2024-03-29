@@ -8,7 +8,7 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import ImageModal from "./components/ImageModal/ImageModal";
+import ImageModal from "./components/ImageModal/ImageModal"; // Імпорт компоненту ImageModal
 
 const API_URL = "https://api.unsplash.com/search/photos";
 const IMAGES_PER_PAGE = 20;

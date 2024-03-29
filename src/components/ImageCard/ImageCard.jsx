@@ -1,13 +1,19 @@
+// В компоненті ImageCard.jsx
+
 import React from "react";
 import styles from "./ImageCard.module.css";
 
-const ImageCard = ({ image }) => {
+const ImageCard = ({ image, onImageClick }) => {
+  const handleClick = () => {
+    // Викликати обробник події onImageClick з передачею зображення
+    onImageClick(image);
+  };
+
   return (
-    <li className={styles.card}>
+    <li className={styles.card} onClick={handleClick}>
       <img
         src={image.urls.regular}
         alt={image.alt_description}
-        title={image.description} // Додано атрибут title з назвою зображення
         className={styles.image}
       />
       <div className={styles.overlay}>
