@@ -1,30 +1,32 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import isEnglish from "is-english";
 
-// Функція для перевірки, чи є рядок англійським
-const isEnglish = (text) => {
-  return /^[a-zA-Z0-9\s]+$/.test(text);
-};
-
-const SearchBar = ({ onSubmit }) => {
+const SearchBar = ({ onSubmit, onCloseModal }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setSearchTerm(e.target.value); // Оновлення стану зі значенням інпуту
+    setSearchTerm(e.target.value);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Зупинка перезавантаження сторінки
+    e.preventDefault();
 
-    // Перевірка, чи є введене слово англійським
-    if (!isEnglish(searchTerm)) {
-      setError("Please enter an English word.");
+    if (!searchTerm.trim()) {
+      toast.error("Please enter a search term.");
       return;
     }
 
-    onSubmit(searchTerm); // Передача введеного тексту назад до батьківського компонента
-    setSearchTerm(""); // Очистка поля пошуку після надсилання
-    setError(null); // Очистка повідомлення про помилку
+    if (!isEnglish(searchTerm.trim())) {
+      toast.error("Please enter an English word.");
+      if (onCloseModal) {
+        onCloseModal(); // Викликаємо функцію для закриття модального вікна
+      }
+      return;
+    }
+
+    onSubmit(searchTerm.trim());
+    setSearchTerm("");
   };
 
   return (
@@ -33,10 +35,9 @@ const SearchBar = ({ onSubmit }) => {
         type="text"
         placeholder="Search images..."
         value={searchTerm}
-        onChange={handleChange} // Обробник зміни значення інпуту
+        onChange={handleChange}
       />
       <button type="submit">Search</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };

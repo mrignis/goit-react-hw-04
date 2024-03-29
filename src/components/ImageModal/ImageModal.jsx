@@ -1,3 +1,4 @@
+import React from "react";
 import Modal from "react-modal";
 
 import styles from "./ImageModal.module.css";
@@ -19,7 +20,7 @@ const ImageModal = ({ isOpen, image, onClose }) => {
       className={styles.modal}
       overlayClassName={styles.overlay}
     >
-      {imageUrl && <img src={imageUrl} alt={altDescription} />}
+      <img src={imageUrl} alt={altDescription} />
       <button onClick={onClose}>Close</button>
     </Modal>
   );
