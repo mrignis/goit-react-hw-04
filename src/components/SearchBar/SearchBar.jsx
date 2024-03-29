@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast"; // Імпорт функціоналу виведення повідомлення про помилку
 
 const SearchBar = ({ onSubmit }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,6 +10,13 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Зупинка перезавантаження сторінки
+
+    if (!searchTerm.trim()) {
+      // Перевірка на пустий рядок
+      toast.error("Please enter a search term."); // Повідомлення про помилку
+      return; // Зупинка відправки запиту у випадку порожнього рядка
+    }
+
     onSubmit(searchTerm); // Передача введеного тексту назад до батьківського компонента
   };
 

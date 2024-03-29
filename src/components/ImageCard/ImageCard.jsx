@@ -1,5 +1,3 @@
-// В компоненті ImageCard.jsx
-
 import React from "react";
 import styles from "./ImageCard.module.css";
 
@@ -10,11 +8,12 @@ const ImageCard = ({ image, onImageClick }) => {
   };
 
   return (
-    <li className={styles.card} onClick={handleClick}>
+    <li className={styles.card}>
       <img
-        src={image.urls.regular}
+        src={image.urls.small} // Використовуємо urls.small для зображення маленького розміру
         alt={image.alt_description}
         className={styles.image}
+        onClick={handleClick} // Обробник кліку на зображенні
       />
       <div className={styles.overlay}>
         <div className={styles.overlayContent}>
