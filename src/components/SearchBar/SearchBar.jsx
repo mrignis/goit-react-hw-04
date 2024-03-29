@@ -1,62 +1,27 @@
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-hot-toast";
-import clsx from "clsx";
-import axios from "axios"; // Імпортуємо Axios
-
-import styles from "./SearchBar.module.css";
-
-const instance = axios.create({
-  baseURL: "https://dummyjson.com",
-});
-
-const requestProductsByQuery = async (query = "") => {
-  const { data } = await instance.get(`/products/search?q=${query}`);
-  return data;
-};
+import React, { useState } from "react";
 
 const SearchBar = ({ onSubmit }) => {
-  const validationSchema = Yup.object().shape({
-    query: Yup.string().required("Please enter a search query"),
-  });
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const formik = useFormik({
-    initialValues: {
-      query: "",
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      try {
-        const data = await requestProductsByQuery(values.query);
-        onSubmit(data);
-        formik.resetForm();
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Failed to fetch data. Please try again later.");
-      }
-    },
-  });
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value); // Оновлення стану зі значенням інпуту
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Зупинка перезавантаження сторінки
+    onSubmit(searchTerm); // Передача введеного тексту назад до батьківського компонента
+  };
 
   return (
-    <header className={styles.header}>
-      <form onSubmit={formik.handleSubmit}>
-        <input
-          type="text"
-          name="query"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-          className={clsx(styles.input, {
-            [styles.error]: formik.touched.query && formik.errors.query,
-          })}
-          {...formik.getFieldProps("query")}
-        />
-        {formik.touched.query && formik.errors.query && (
-          <div className={styles.errorMessage}>{formik.errors.query}</div>
-        )}
-        <button type="submit">Search</button>
-      </form>
-    </header>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Search images..."
+        value={searchTerm}
+        onChange={handleChange} // Обробник зміни значення інпуту
+      />
+      <button type="submit">Search</button>
+    </form>
   );
 };
 

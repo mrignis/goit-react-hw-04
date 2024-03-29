@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import "./App.css"; // Підключення CSS
 
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -60,7 +61,9 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="app-container">
+      {" "}
+      {/* Додайте клас app-container */}
       <SearchBar onSubmit={handleSearch} />
       {isLoading && <Loader />}
       {images.length > 0 && (
